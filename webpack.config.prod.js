@@ -5,17 +5,19 @@ const base = require("./webpack.config.base");
 
 module.exports = {
   ...base,
-  mode: "development",
-  devtool: "inline-source-map",
-  devServer: {
-    contentBase: "./dist",
-  },
+  mode: "production",
+  plugins: [
+    ...base.plugins,
+    new MiniCssExtractPlugin({
+      filename: "[name].[contenthash].css",
+    }),
+  ],
   module: {
     rules: [
       ...base.module.rules,
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
     ],
   },
